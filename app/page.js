@@ -2,11 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Book, User, Star, ShoppingCart, Download, Eye, EyeOff, Quote, BookOpen, Heart, Calendar, Award, Mail, Twitter, Facebook, Instagram } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default function HomePage() {
   const [activeWorld, setActiveWorld] = useState('open');
   const [isVisible, setIsVisible] = useState({});
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -24,6 +29,11 @@ export default function HomePage() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null;
+  }
 
   const worldThemes = {
     open: {
