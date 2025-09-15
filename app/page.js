@@ -281,7 +281,7 @@ export default function HomePage() {
                 </p>
                 <p className={`text-lg ${currentTheme.textColor} opacity-80 leading-relaxed`}>
                   Their work has been featured in [publications] and they have spoken at [conferences/events].
-                  "Two Worlds" represents the culmination of years of research and personal exploration into
+                  &ldquo;Two Worlds&rdquo; represents the culmination of years of research and personal exploration into
                   the nature of awareness and reality.
                 </p>
               </div>
