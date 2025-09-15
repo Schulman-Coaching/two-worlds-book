@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Book, User, Star, ShoppingCart, Download, Eye, EyeOff, Quote, BookOpen, Heart, Calendar, Award, Mail, Twitter, Facebook, Instagram } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-
 export default function HomePage() {
   const [activeWorld, setActiveWorld] = useState('open');
   const [isVisible, setIsVisible] = useState({});
@@ -12,27 +10,39 @@ export default function HomePage() {
   useEffect(() => {
     setMounted(true);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          setIsVisible(prev => ({
-            ...prev,
-            [entry.target.id]: entry.isIntersecting
-          }));
-        });
-      },
-      { threshold: 0.1 }
-    );
+    // Add a small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            setIsVisible(prev => ({
+              ...prev,
+              [entry.target.id]: entry.isIntersecting
+            }));
+          });
+        },
+        { threshold: 0.1 }
+      );
 
-    const elements = document.querySelectorAll('[id]');
-    elements.forEach(el => observer.observe(el));
+      const elements = document.querySelectorAll('[id]');
+      elements.forEach(el => observer.observe(el));
 
-    return () => observer.disconnect();
+      return () => observer.disconnect();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   // Prevent hydration mismatch by not rendering until mounted
   if (!mounted) {
-    return null;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-purple-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Two Worlds...</p>
+        </div>
+      </div>
+    );
   }
 
   const worldThemes = {
